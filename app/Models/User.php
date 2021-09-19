@@ -40,4 +40,39 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+
+    /**
+     * Get the roles that user belongs to
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */    
+    public function roles() {
+
+        return $this->belongsToMany(Role::class)->using(RoleUser::class);
+
+    }
+
+    /**
+     * Get the orders that belongs to the user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */    
+    public function orders() {
+
+        return $this->hasMany(Order::class);
+
+    }
+
+    /**
+     * Get the subscriptions that belongs to the user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function subscriptions() {
+        
+        return $this->belongsToMany(Subscription::class, 'orders');
+
+    }
 }
