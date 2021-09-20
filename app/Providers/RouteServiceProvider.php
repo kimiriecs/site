@@ -42,24 +42,19 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('user', function ($value) {
             return User::where('id', $value)->orWhere('name', $value)->first();
         });
-        // Route::bind('role', function ($value) {
-        //     return Role::where('id', $value)->orWhere('name', $value)->first();
-        // });
+        Route::bind('role', function ($value) {
+            return Role::where('id', $value)->orWhere('name', $value)->first();
+        });
 
         $this->configureRateLimiting();
 
         $this->routes(function () {
             
             Route::prefix('api')
-                ->middleware(SubstituteBindings::class) // for API test only
+                // ->middleware('api') // for API test only
+                ->middleware(SubstituteBindings::class)
                 ->namespace($this->namespace)
                 ->group(base_path('routes/api.php'));
-
-
-            // Route::prefix('api')
-            //     ->middleware('api')
-            //     ->namespace($this->namespace)
-            //     ->group(base_path('routes/api.php'));
 
             Route::middleware('web')
                 ->namespace($this->namespace)

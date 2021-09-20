@@ -20,6 +20,43 @@ class UserController extends Controller
 
 
     /**
+     * Check the user role.
+     *
+     * @return $roles
+     */
+    public function checkRole(User $user)
+    {
+        $roles = $user->roles()->get();
+
+        foreach ($roles as $role) {
+            dump('ID #' . $role->id . ' ' . $role->name);
+        }
+    }
+
+
+    /**
+     * Check if the user has role.
+     *
+     * @return boolean
+     */
+    public function hasRole(User $user, Role $role)
+    {
+        dd($user->hasRole($role));
+    }
+
+
+    /**
+     * Check if the user is Admin.
+     *
+     * @return boolean
+     */
+    public function isAdmin(User $user)
+    {
+        dd($user->isAdmin());
+    }
+
+
+    /**
      * Get the user with certain id
      *
      * @param int $id
@@ -41,12 +78,9 @@ class UserController extends Controller
      * @param string $role
      * @return \Illuminate\Http\Response
      */
-    public function getUserWithCirtainRole($role) {
+    public function getUserByRole(Role $role) {
 
-        $users = User::whereHas('roles', function($q) use ($role) {
-                    $q->where('name', $role);
-                })
-                ->get(['id', 'name']);
+        $users = User::findByRole($role);
 
         foreach ($users as $user) {
             dump($user->id . "  " . $user->name);
@@ -95,7 +129,9 @@ class UserController extends Controller
      */
     public function showAll(User $user)
     {
-        dd($user->all()->toBase()->sortByDesc('id')->where('id', '<', 2));
+        $users = $user->all();
+
+        dd($users);
         
         // return $user;
     }
