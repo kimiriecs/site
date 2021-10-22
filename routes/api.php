@@ -11,7 +11,7 @@ Route::prefix('users')->group(function() {
     Route::get('/trainees', [UserController::class, 'showAllTrainees']);
     Route::get('/roles/{role}', [UserController::class, 'getUserByRole']);
     Route::get('/{user}/isadmin', [UserController::class, 'isAdmin']);
-    Route::get('/{user}/role', [UserController::class, 'checkRole']);
+    Route::get('/{user}/role', [UserController::class, 'checkRoleByUserId']);
     Route::get('/{user}/{role}', [UserController::class, 'hasRole']);
     Route::get('/{user}', [UserController::class, 'show']);
     Route::get('/', [UserController::class, 'showAll']);

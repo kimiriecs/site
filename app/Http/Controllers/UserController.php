@@ -28,9 +28,7 @@ class UserController extends Controller
     {
         $roles = $user->roles()->get();
 
-        foreach ($roles as $role) {
-            dump('ID #' . $role->id . ' ' . $role->name);
-        }
+        return $roles;
     }
 
 
@@ -86,11 +84,7 @@ class UserController extends Controller
 
         $users = User::findByRole($role);
 
-        foreach ($users as $user) {
-
-            return $user->id . "  " . $user->name;
-
-        }
+        return $users;
 
     }
 
