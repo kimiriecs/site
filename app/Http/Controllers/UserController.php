@@ -24,7 +24,7 @@ class UserController extends Controller
      *
      * @return $roles
      */
-    public function checkRole(User $user)
+    public function checkRoleByUserId(User $user)
     {
         $roles = $user->roles()->get();
 
@@ -41,7 +41,9 @@ class UserController extends Controller
      */
     public function hasRole(User $user, Role $role)
     {
-        dd($user->hasRole($role));
+
+        return $user->hasRole($role);
+
     }
 
 
@@ -52,7 +54,9 @@ class UserController extends Controller
      */
     public function isAdmin(User $user)
     {
-        dd($user->isAdmin());
+
+        return $user->isAdmin();
+
     }
 
 
@@ -83,7 +87,9 @@ class UserController extends Controller
         $users = User::findByRole($role);
 
         foreach ($users as $user) {
-            dump($user->id . "  " . $user->name);
+
+            return $user->id . "  " . $user->name;
+
         }
 
     }
@@ -115,10 +121,10 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
+
     public function show(User $user)
     {
-        dd($user);
-        // return $user;
+        return $user;
     }
 
     /**
@@ -129,11 +135,28 @@ class UserController extends Controller
      */
     public function showAll(User $user)
     {
-        $users = $user->all();
+        $users = $user->with('roles')->get();
 
-        dd($users);
-        
-        // return $user;
+        return $users;
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function showAllTrainees(User $user)
+    {
+        $users = $user->whereHas('roles', function($query) {
+
+                    $query->whereIn('name', ['trainee', 'guest']);
+
+                })->get();
+
+        $users = $users->toJson();
+
+        return $users;
     }
 
     /**
